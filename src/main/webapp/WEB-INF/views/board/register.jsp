@@ -28,6 +28,8 @@
 			     <div id="percent">0 %</div>
                  <div id="status">ready</div>
 			   </div>
+			   
+			     
 		    </div>
 		</div> <!-- end of box-body -->
 		
@@ -36,17 +38,16 @@
 			<%@ include file="uploadedFiles.jsp"%>
 		  </ul>
 		  
-		  <a href="/board/listPage${criteria.makeQuery()}" class="btn btn-default">목록</a>
 		  <button type="submit" class="btn btn-primary">Submit</buteston>
 		</div>
 
 	</form>
 
-<form action="/uploadAjaxes" id="form_attach" method="POST" enctype="multipart/form-data">
-       <input type="hidden" name="type" value="ajax" />
-       <input type="file" name="files" id="ajax-file" style="display: none;" />
-       <!-- <input type="submit" value="ajax로 제출" /> -->
-</form>
+    <form action="/uploadAjaxes" id="form_attach" method="POST" enctype="multipart/form-data">
+	   <input type="hidden" name="type" value="ajax" />
+	   <input type="file" name="files" id="ajax-file" style="display: none;" />
+	   <!-- <input type="submit" value="ajax로 제출" /> -->
+    </form>
 
 
 <script src="/resources/upload.js?ver=1"></script>

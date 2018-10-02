@@ -27,6 +27,7 @@
                 <textarea name="content" id="content" cols="30" rows="3"
                     class="form-control" placeholder="내용..">${ board.content }</textarea>
             </div>
+
         </div>
         
         <div class="form-group">
@@ -36,6 +37,7 @@
              <div id="status">ready</div>
            </div>
         </div>
+        
         <ul class="mailbox-attachments clearfix uploadedList">
             <%@ include file="uploadedFiles.jsp"%>  
         </ul>
@@ -47,15 +49,14 @@
 
     </form>
     
-<form action="/uploadAjaxes" id="form_attach" method="POST" enctype="multipart/form-data">
+    <form action="/uploadAjaxes" id="form_attach" method="POST" enctype="multipart/form-data">
        <input type="hidden" name="bno" value="${ board.bno }" />
        <input type="file" name="files" id="ajax-file" style="display: none;" />
        <!-- <input type="submit" value="ajax로 제출" /> -->
-</form>
-
-<script src="/resources/upload.js?ver=2"></script>
+    </form>
+        
 <script>
-showUpFiles(${board.bno});
+showAttaches(${board.bno});
 </script>
 
 <%@ include file="../footer.jsp"%>

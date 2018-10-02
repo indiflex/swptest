@@ -47,7 +47,7 @@ public class FileUtils {
 		
 		String uploadedFilename = null;
 		if (getMediaType(ext) != null)
-			uploadedFilename = mamkeThumbnail(uploadPath, dirname, filename);
+			uploadedFilename = mamkeCrop(uploadPath, dirname, filename);
 		else
 			uploadedFilename = makeIcon(uploadPath, dirname, filename);
 

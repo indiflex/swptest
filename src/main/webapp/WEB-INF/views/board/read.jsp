@@ -87,8 +87,8 @@
 	<div class="box-footer text-center">
 		<button id="btn-remove-read" class="btn btn-danger">삭제</button>
 		<a href="/board/update${criteria.makeQuery()}&bno=${ board.bno }"
-			class="btn btn-primary">수정</a> 
-		<a href="/board/listPage${criteria.makeQuery()}" class="btn btn-default">목록</a>
+			class="btn btn-primary">수정</a> <a
+			href="/board/listPage${criteria.makeQuery()}" class="btn btn-default">목록</a>
 	</div>
 </section>
 
@@ -130,7 +130,6 @@
 <script src="../resources/test/replytest.js"></script>
 </c:if>
 
-<script src="/resources/upload.js?ver=2"></script>
 <script>
 $(document).ready(	function() {
 	// var $boxFooter = $("section.content div.box-footer");
@@ -145,7 +144,7 @@ $(document).ready(	function() {
 
 	//$('#myModal').modal('show');
 	
-	showUpFiles(${board.bno});
+    showAttaches(${board.bno});	
 });
 </script>
 

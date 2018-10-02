@@ -13,6 +13,8 @@ public interface ReplyDAO {
 	void update(Reply reply) throws Exception;
 
 	void delete(Integer rno) throws Exception;
+	
+	void deleteAll(Integer bno) throws Exception;
 
 	List<Reply> listPage(Integer bno, Criteria criteria) throws Exception;
 

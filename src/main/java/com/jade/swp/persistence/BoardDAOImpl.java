@@ -32,9 +32,9 @@ public class BoardDAOImpl implements BoardDAO {
 	private static final String PLUS_VIEWCNT = NS + ".plusViewcnt";
 	private static final String ADD_ATTACH = NS + ".addAttach";
 	private static final String GET_ATTACH = NS + ".getAttach";
-	private static final String REMOVE_ATTACH = NS + ".removeAttach";
+	private static final String DEL_ATTACH = NS + ".delAttach";
 	private static final String APPEND_ATTACH = NS + ".appendAttach";
-	private static final String REMOVE_ALL_ATTACHES = NS + ".removeAllAttaches";
+	private static final String DELETE_ALL_ATTACHES = NS + ".deleteAllAttaches";
 
 	@Override
 	public void create(Board board) throws Exception {
@@ -109,21 +109,21 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public void removeAttach(String fileName, Integer bno) {
-		session.update(REMOVE_ATTACH, fileName);
+	public void deleteAttach(String fileName) {
+		session.delete(DEL_ATTACH, fileName);
 	}
 
 	@Override
-	public void appendAttach(String upfile, Integer bno) {
+	public void appendAttach(String fullName, Integer bno) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("bno", bno);
-		paramMap.put("fullname", upfile);
-		session.update(APPEND_ATTACH, paramMap);
+		paramMap.put("fullname", fullName);
+		session.insert(APPEND_ATTACH, paramMap);
 	}
 
 	@Override
-	public void deleteAllAttach(Integer bno) {
-		session.delete(REMOVE_ALL_ATTACHES, bno);
+	public void deleteAllAttaches(Integer bno) {
+		session.delete(DELETE_ALL_ATTACHES, bno);
 	}
 
 }

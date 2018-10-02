@@ -31,7 +31,7 @@ public class UploadController {
 	private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 	
 	@Inject
-	private BoardService boardService;
+	private BoardService service;
 	
 	@Resource(name = "uploadPath")
 	private String uploadPath;
@@ -70,8 +70,8 @@ public class UploadController {
 				uploadedFiles[i] = FileUtils.uploadFile(files[i], uploadPath);
 			}
 			
-			if (bno > 0) {
-				boardService.appendAttach(uploadedFiles, bno);
+			if (bno > 0 ) {
+				service.appendAttach(uploadedFiles, bno);
 			}
 			
 			return new ResponseEntity<>(uploadedFiles, HttpStatus.CREATED);
@@ -87,6 +87,10 @@ public class UploadController {
 		logger.info("deleteFile.....fileName={}, bno={}", fileName, bno);
 		
 		try {
+			if (bno > 0) {
+				service.removeAttach(fileName);
+			}
+			
 			boolean isImage = FileUtils.getMediaType(FileUtils.getFileExtension(fileName)) != null;
 			File file = new File(uploadPath + fileName);
 			file.delete();
@@ -100,13 +104,8 @@ public class UploadController {
 				real.delete();
 			}
 			
-			if (bno > 0) {
-				boardService.removeAttach(fileName, bno);
-			}
-			
 			return new ResponseEntity<>("deleted", HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}

@@ -19,6 +19,11 @@
 		delete from Reply where rno = #{rno}
 	</delete>
 	
+	<delete id="deleteAll">
+        delete from Reply where bno = #{bno}
+    </delete>
+    
+	
 	<select id="list" resultType="com.jade.swp.domain.Reply">
 		select * from Reply
 		 where bno = #{bno} order by rno desc

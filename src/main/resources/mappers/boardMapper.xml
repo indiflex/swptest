@@ -16,15 +16,20 @@
     </insert>
     
     <insert id="appendAttach">
-        insert into Attach(  bno, fullname )
+        insert into Attach(  bno,    fullname )
                    values( #{bno}, #{fullname} )
     </insert>
+	
+	<select id="getAttach" resultType="String">
+        select fullname from Attach
+         where bno = #{bno}
+    </select>
     
-    <delete id="removeAttach">
+    <delete id="delAttach">
         delete from Attach where fullname = #{fullname}
     </delete>
     
-     <delete id="removeAllAttaches">
+    <delete id="deleteAllAttaches">
         delete from Attach where bno = #{bno}
     </delete>
 	
@@ -32,11 +37,6 @@
 		select * from Board
 		 where bno = #{bno}
 	</select>
-	
-	<select id="getAttach" resultType="String">
-        select fullname from Attach
-         where bno = #{bno}
-    </select>
 	
 	<update id="update">
 		update Board set title = #{title},

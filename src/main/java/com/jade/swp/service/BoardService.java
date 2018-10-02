@@ -24,7 +24,7 @@ public interface BoardService {
 
 	List<String> getAttach(Integer bno);
 
-	void removeAttach(String fileName, Integer bno);
+	void removeAttach(String fileName);
 
-	void appendAttach(String[] uploadedFiles, Integer bno);
+	void appendAttach(String[] fullNames, Integer bno);
 }

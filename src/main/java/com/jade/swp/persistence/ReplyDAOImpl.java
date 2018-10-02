@@ -24,6 +24,7 @@ public class ReplyDAOImpl implements ReplyDAO {
 	private static final String CREATE = NS + ".create";
 	private static final String UPDATE = NS + ".update";
 	private static final String DELETE = NS + ".delete";
+	private static final String DELETE_ALL = NS + ".deleteAll";
 	private static final String LIST_PAGE = NS + ".listPage";
 	private static final String COUNT = NS + ".count";
 	private static final String GET_BNO = NS + ".getBno";
@@ -69,6 +70,11 @@ public class ReplyDAOImpl implements ReplyDAO {
 	@Override
 	public int getBno(Integer rno) throws Exception {
 		return session.selectOne(GET_BNO, rno);
+	}
+
+	@Override
+	public void deleteAll(Integer bno) throws Exception {
+		session.delete(DELETE_ALL, bno);
 	}
 
 }

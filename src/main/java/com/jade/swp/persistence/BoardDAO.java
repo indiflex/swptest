@@ -32,9 +32,9 @@ public interface BoardDAO {
 
 	List<String> getAttach(Integer bno);
 
-	void removeAttach(String fileName, Integer bno);
+	void deleteAttach(String fileName);
 
-	void appendAttach(String upfile, Integer bno);
+	void appendAttach(String fullName, Integer bno);
 
-	void deleteAllAttach(Integer bno);
+	void deleteAllAttaches(Integer bno);
 }

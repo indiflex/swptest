@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jade.swp.domain.Board;
 import com.jade.swp.domain.Criteria;
 import com.jade.swp.persistence.BoardDAO;
+import com.jade.swp.persistence.ReplyDAO;
 
 @Service
 public class BoardServiceImpl implements BoardService {
 
 	@Inject
 	private BoardDAO dao;
+	
+	@Inject
+	private ReplyDAO replyDao;
 
 	@Transactional
 	@Override
@@ -46,7 +50,8 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public void remove(Integer bno) throws Exception {
-		dao.deleteAllAttach(bno);
+		dao.deleteAllAttaches(bno);
+		replyDao.deleteAll(bno);
 		dao.delete(bno);
 	}
 
@@ -80,15 +85,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void removeAttach(String fileName, Integer bno) {
-		dao.removeAttach(fileName, bno);
+	public void removeAttach(String fileName) {
+		dao.deleteAttach(fileName);
 	}
 
 	@Transactional
 	@Override
-	public void appendAttach(String[] uploadedFiles, Integer bno) {
-		for (String upfile : uploadedFiles)
-			dao.appendAttach(upfile, bno);
+	public void appendAttach(String[] fullNames, Integer bno) {
+		for (String fullName : fullNames)
+			dao.appendAttach(fullName, bno);
 	}
 
 }

@@ -1,9 +1,9 @@
 const $fileDrop = $('div.fileDrop');
 
-let gPath = window.location.pathname,
-	gIsRegister = gPath.indexOf('register') !== -1,
-	gIsUpdate = gPath.indexOf('update') !== -1,
-    gIsEditing = gIsRegister || gIsUpdate;
+let gUri = window.location.pathname,
+	gIsRegister = gUri.indexOf('/register') !== -1,
+	gIsUpdate = gUri.indexOf('/update') !== -1,
+	gIsEditing = gIsRegister || gIsUpdate;
 
 $fileDrop.on('dragover dragenter', (evt) => {
     evt.preventDefault();
@@ -18,7 +18,7 @@ $fileDrop.on('dragleave', (evt) => {
 $fileDrop.on('drop', (evt) => {
     evt.preventDefault();
 	let files = evt.originalEvent.dataTransfer.files;
-	console.debug("drop>>", files, $('#form_attach'));
+	console.debug("drop>>", files);
 	$fileDrop.css("border", "1px dotted gray");
 	$("#ajax-file").prop("files", evt.originalEvent.dataTransfer.files);
 	$('#form_attach').submit();
@@ -62,13 +62,13 @@ $('#form_attach').ajaxForm({
 
 function deleteFile(fullName, bno) {
 	let fileInfo = getFileInfo(fullName);
+	console.debug("bno>>>>>", bno)
+	if (!confirm("삭제된 파일은 복구되지 않습니다. 그래도 삭제하시겠어요??"))
+		return;
+	
 	let url = "/deleteFile?fileName=" + fullName;
 	if (bno)
 		url += "&bno=" + bno;
-	
-	console.debug("dleetfile url=", url)
-	if (!confirm("삭제 된 파일은 복구가 불가능합니다. 그래도 삭제하시겠어요??"))
-		return;
 	
 	sendAjax(url, (isSuccess, res) => {
         if (isSuccess) {
