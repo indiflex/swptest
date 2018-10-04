@@ -18,8 +18,7 @@
 
 			<div class="form-group">
 				<label for="writer">작성자</label>
-				<input type="text" id="writer"
-					name="writer" class="form-control" />
+				<input type="text" id="writer" name="writer" value="${ login.uid }" class="form-control" readonly/>
 			</div>
 			
 			<div class="form-group">
@@ -38,7 +37,7 @@
 			<%@ include file="uploadedFiles.jsp"%>
 		  </ul>
 		  
-		  <button type="submit" class="btn btn-primaLink">Submit</buteston>
+		  <button type="submit" class="btn btn-primary">Submit</button>
 		</div>
 
 	</form>
@@ -50,9 +49,5 @@
     </form>
 
 
-<script src="/resources/upload.js?ver=1"></script>
-<script>
-gIsEditing = true;
-</script>
 <%@ include file="../footer.jsp"%>
 </html>

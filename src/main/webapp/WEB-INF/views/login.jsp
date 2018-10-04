@@ -10,16 +10,16 @@
 		<div class="box-body">
 			<div class="form-group">
 				<input type="text" id="uid"
-					name="uid" class="form-control" placeholder="ID..." value="${ uid }" autofocus />
+					name="uid" value="user1" class="form-control" placeholder="ID..." value="${ uid }" autofocus />
 			</div>
 
 			<div class="form-group">
-			    <input type="password" name="upw" placeholder="Password..." class="form-control" />
+			    <input type="password" name="upw" value="1234" placeholder="Password..." class="form-control" />
 			</div>
 
 			<div class="form-group">
 				<label for="useCookie">
-				    <input type="checkbox" id="useCookie" name="useCookine"/> Remember Me
+				    <input type="checkbox" id="useCookie" name="useCookie"/> Remember Me
 				</label>
 			</div>
 			

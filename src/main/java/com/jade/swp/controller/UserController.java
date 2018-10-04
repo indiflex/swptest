@@ -1,6 +1,11 @@
 package com.jade.swp.controller;
 
+import java.util.Date;
+
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,9 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.WebUtils;
 
 import com.jade.swp.domain.User;
 import com.jade.swp.dto.LoginDTO;
+import com.jade.swp.interceptor.SessionNames;
 import com.jade.swp.service.UserService;
 
 @Controller
@@ -40,14 +47,30 @@ public class UserController {
 			return;
 		}
 		
+		Date sessionLimit = new Date(System.currentTimeMillis() + SessionNames.EXPIRE * 1000);
+		service.keepLogin(user.getUid(), session.getId(), sessionLimit);
 		model.addAttribute("user", user);
 	}
 	
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public String logout(@ModelAttribute("dto") LoginDTO dto, HttpSession session) {
+	public String logout(@ModelAttribute("dto") LoginDTO dto,
+			HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		logger.info("Logout");
-		session.removeAttribute("login");
-		session.removeAttribute("uid");
+		
+		User user = (User)session.getAttribute(SessionNames.LOGIN);
+		if (user != null) {
+			session.removeAttribute(SessionNames.LOGIN);
+			session.invalidate();
+			
+			Cookie loginCookie = WebUtils.getCookie(request, SessionNames.LOGIN_COOKIE);
+			if (loginCookie != null) {
+				loginCookie.setPath("/");
+				loginCookie.setMaxAge(0);
+				response.addCookie(loginCookie);
+				service.keepLogin(user.getUid(), session.getId(), new Date());
+			}
+		}
+
 		return "login";
 	}
 }

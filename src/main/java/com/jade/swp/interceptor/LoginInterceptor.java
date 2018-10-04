@@ -1,5 +1,6 @@
 package com.jade.swp.interceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -33,6 +34,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter implements Sessi
 		
 		if (user != null) {
 			session.setAttribute(LOGIN, user);
+			
+//			if (request.getParameter("useCookie") != null)
+			Cookie loginCookie = new Cookie(LOGIN_COOKIE, session.getId());
+			loginCookie.setPath("/");
+			loginCookie.setMaxAge(EXPIRE);
+			
+			response.addCookie(loginCookie);
 
 			String attempted = (String) session.getAttribute(ATTEMPTED);
 			if (StringUtils.isNotEmpty(attempted)) {

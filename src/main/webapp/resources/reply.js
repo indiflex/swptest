@@ -19,7 +19,7 @@ function listPage(page, bno) {
 		if (isSuccess) {
 			res.currentPage = page;
 			res.pageData = makePageData(res.pageMaker);
-//			console.log("res>>", res.pageData)
+			console.log("res>>", res)
 			renderHbs("replies", res);
 		}
 	});
@@ -79,16 +79,24 @@ const checkEdit = () => {
 	
 };
 
-function editReply(rno, replyer, replytext) {
+function editReply(loginUid, rno, replyer, replytext) {
 	event.preventDefault();
 	gIsEdit = !!rno;
 	gRno = rno;
 	gReplytext = replytext;
 	
+	console.debug("loginUid=", loginUid, ", replyer=", replyer)
+	
+	if (gIsEdit && loginUid !== replyer) {
+		alert("본인 댓글만 수정 가능합니다!");
+		return;
+	}
+	
 	renderHbs('myModal', {
 		gIsEdit: gIsEdit,
-		replyer: replyer,
-		replytext: replytext
+		replyer: replyer || loginUid,
+		replytext: replytext,
+		loginUid: loginUid
 	});
 	
 	$('#myModal').modal();

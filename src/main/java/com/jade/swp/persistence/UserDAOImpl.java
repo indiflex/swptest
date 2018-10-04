@@ -1,5 +1,9 @@
 package com.jade.swp.persistence;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -16,10 +20,26 @@ public class UserDAOImpl implements UserDAO {
 	
 	private static final String NS = "com.jade.swp.persistence.UserMapper";
 	private static final String LOGIN = NS + ".login";
+	private static final String KEEP_LOGIN = NS + ".keepLogin";
+	private static final String CHECK_LOGIN_BEFORE = NS + ".checkLoginBefore";
 
 	@Override
 	public User login(LoginDTO dto) throws Exception {
 		return session.selectOne(LOGIN, dto);
+	}
+
+	@Override
+	public void keepLogin(String uid, String sessionId, Date sessionLimit) {
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("uid", uid);
+		paramMap.put("sessionId", sessionId);
+		paramMap.put("sessionLimit", sessionLimit);
+		session.update(KEEP_LOGIN, paramMap);
+	}
+
+	@Override
+	public User checkLoginBefore(String loginCookie) {
+		return session.selectOne(CHECK_LOGIN_BEFORE, loginCookie);
 	}
 
 }

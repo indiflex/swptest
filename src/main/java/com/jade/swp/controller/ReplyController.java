@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jade.swp.domain.Criteria;
 import com.jade.swp.domain.PageMaker;
 import com.jade.swp.domain.Reply;
+import com.jade.swp.domain.User;
+import com.jade.swp.interceptor.SessionNames;
 import com.jade.swp.service.ReplyService;
 
 @RestController
@@ -55,8 +58,8 @@ public class ReplyController {
 	
 	@RequestMapping(value = "/{bno}/{page}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> listPage(
-			@PathVariable Integer bno,
-			@PathVariable Integer page) {
+			@PathVariable Integer bno, @PathVariable Integer page,
+			HttpSession session) {
 		logger.debug("ReplyListPage bno, page>> {}, {}", bno, page);
 		Map<String, Object> resultMap = new HashMap<>();
 		try {
@@ -68,6 +71,10 @@ public class ReplyController {
 			pageMaker.setCriteria(criteria);
 			pageMaker.setTotalCount(service.count(bno));
 			resultMap.put("pageMaker", pageMaker);
+			
+			User loginUser = (User)session.getAttribute(SessionNames.LOGIN);
+			if (loginUser != null)
+				resultMap.put("loginUid", loginUser.getUid());
 			
 			return new ResponseEntity<>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
