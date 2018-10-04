@@ -28,7 +28,7 @@
     
     <link href="/resources/images/favicon.ico" rel="shortcut icon" type="image/png">
     
-    <link href="/resources/style.css?ver=2" rel="stylesheet" type="text/css" />
+    <link href="/resources/style.css?ver=3" rel="stylesheet" type="text/css" />
   </head>
       <!-- jQuery 2.1.4 -->
     <script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
@@ -39,7 +39,7 @@
     <script src="/resources/ajax.js?ver=1"></script>
     
     
-  <body class="skin-blue sidebar-mini">
+  <body class="skin-blue sidebar-mini sidebar-collapse">
     <div class="wrapper">
       
       <header class="main-header">
@@ -253,7 +253,9 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span id="loginUserName" class="hidden-xs">
+                    Please Sign In!
+                  </span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
@@ -282,7 +284,7 @@
                       <a href="#" class="btn btn-default btn-flat">Profile</a>
                     </div>
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                      <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                     </div>
                   </li>
                 </ul>
@@ -323,6 +325,16 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
+            <li class="treeview">
+              <a href="/login">
+                <i class="fa fa-sign-in"></i> <span>Sign In</span>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="/board/listPage">
+                <i class="fa fa-clipboard"></i> <span>Board</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+             </li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -464,7 +476,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            General Form Elements
+            SWP
             <small>Preview</small>
           </h1>
           <ol class="breadcrumb">
@@ -473,3 +485,12 @@
             <li class="active">General Elements</li>
           </ol>
         </section>
+        
+<script>
+$(document).ready( e => {
+	let loginUserName = '${ login.uname }';
+	if (loginUserName) {
+		$('#loginUserName').text(loginUserName);
+	}
+});
+</script>

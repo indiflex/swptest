@@ -3,6 +3,7 @@ package com.jade.swp.util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +105,7 @@ public class FileUtils {
 		int m = cal.get(Calendar.MONTH) + 1;
 		int d = cal.get(Calendar.DATE);
 
-		return makeDir(uploadRootPath, "" + y, StringUtils.len2(m), StringUtils.len2(d));
+		return makeDir(uploadRootPath, "" + y, FileUtils.len2(m), FileUtils.len2(d));
 	}
 
 	public static String makeDir(String uploadRootPath, String... paths) {
@@ -122,5 +123,9 @@ public class FileUtils {
 
 	public static void main(String[] args) {
 		getCurrentUploadPath("/aaa");
+	}
+
+	public static String len2(int n) {
+		return new DecimalFormat("00").format(n).toString();
 	}
 }

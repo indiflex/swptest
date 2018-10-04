@@ -59,6 +59,11 @@
     margin-botton: 10px;	
 }
 
+.mtb100 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
 /* ------------------------------------------------ text  */
 .text-right {
 	text-align: right;

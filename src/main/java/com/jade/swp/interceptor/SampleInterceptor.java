@@ -15,7 +15,9 @@ public class SampleInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiii-pre!!>> preHandler: " + request.getParameter("page"));
+		
+		System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiii-pre!!>> preHandler: " + request.getRequestURI());
+		System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiii-pre!!>> preHandler: " + request.getSession().getAttribute("login"));
 		
 		HandlerMethod method = (HandlerMethod) handler;
 		System.out.println("MMMM>> Bean: " + method.getBean() + ", Method: " + method.getMethod());

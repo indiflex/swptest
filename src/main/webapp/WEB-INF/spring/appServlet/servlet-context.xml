@@ -34,12 +34,27 @@
         <beans:constructor-arg value="/Users/jade/workspace/lecture/tjespring/uploads"></beans:constructor-arg>
     </beans:bean>
 	
+	<!-- interceptor beans -->
 	<beans:bean id="sampleInterceptor" class="com.jade.swp.interceptor.SampleInterceptor"></beans:bean>
+	<beans:bean id="loginInterceptor" class="com.jade.swp.interceptor.LoginInterceptor"></beans:bean>
+	<beans:bean id="authInterceptor" class="com.jade.swp.interceptor.AuthInterceptor"></beans:bean>
+	
 	<interceptors>
 	   <interceptor>
 	       <mapping path="/board/listPage" />
 	       <beans:ref bean="sampleInterceptor"/>
 	   </interceptor>
+	   
+	   <interceptor>
+           <mapping path="/loginPost" />
+           <beans:ref bean="loginInterceptor"/>
+       </interceptor>
+       
+       <interceptor>
+           <mapping path="/board/register" />
+           <mapping path="/board/update" />
+           <beans:ref bean="authInterceptor"/>
+       </interceptor>
 	</interceptors>
 	
 </beans:beans>

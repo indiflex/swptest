@@ -38,7 +38,7 @@
 			<%@ include file="uploadedFiles.jsp"%>
 		  </ul>
 		  
-		  <button type="submit" class="btn btn-primary">Submit</buteston>
+		  <button type="submit" class="btn btn-primaLink">Submit</buteston>
 		</div>
 
 	</form>
