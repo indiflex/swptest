@@ -1,6 +1,5 @@
 package com.jade.swp.controller;
 
-import java.io.IOException;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
@@ -27,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.jade.swp.auth.SnsValue;
+import com.jade.swp.auth.SNSLogin;
 import com.jade.swp.domain.User;
 import com.jade.swp.dto.LoginDTO;
 import com.jade.swp.interceptor.SessionNames;
@@ -40,22 +41,62 @@ public class UserController {
 	@Inject
 	private UserService service;
 	
-	@Autowired
+	@Inject
 	private GoogleConnectionFactory googleConnectionFactory;
 	
-	@Autowired
+	@Inject
 	private OAuth2Parameters googleOAuth2Parameters;
+	
+	@Inject
+	private SnsValue naverSns;
+	
+	@Inject
+	private SnsValue googleSns;
+	
+	@RequestMapping(value = "/auth/naver/callback", method = { RequestMethod.GET, RequestMethod.POST })
+	public String naverCallback(Model model, @RequestParam String code, HttpSession session) throws Exception {
+		System.out.println("NNNNNN>> 여기는 naverCallback: " + code);
+		
+		return loginCallback(new SNSLogin(naverSns), model, code, session);
+	}
 	
 	// 구글 Callback호출 메소드
 	@RequestMapping(value = "/auth/google/callback", method = { RequestMethod.GET, RequestMethod.POST })
-	public String googleCallback(Model model, @RequestParam String code) throws IOException {
+	public String googleCallback(Model model, 
+			@RequestParam String code, @RequestParam String scope,
+			HttpSession session) throws Exception {
 		System.out.println("GGGGGGG>> 여기는 googleCallback: " + code);
-		System.out.println("Model: " + model.toString());
-		System.out.println("This is master written!");
+		System.out.println("Scope: " + scope);
+		
+		model.addAttribute("code", code);
+		model.addAttribute("scope", scope);
+		
+		return loginCallback(new SNSLogin(googleSns), model, code, session);
+	}
 
-		return "/googleResult";
+	private String loginCallback(SNSLogin snsLogin, Model model, String code, HttpSession session) throws Exception {
+		OAuth2AccessToken accessToken = snsLogin.getAccessToken(code);
+        System.out.println("(The Token.raw response looks like this: " + accessToken.getRawResponse() + "')");
+        
+        String userProfile = snsLogin.getUserProfile(accessToken);
+        System.out.println("GoogleUserProfile:" + userProfile);
+        model.addAttribute("profile", userProfile);
+        
+        User snsUser = snsLogin.parseProfile(userProfile);
+        System.out.println("UUUUUUUUU>>" + snsUser);
+        
+        User user = service.getBySns(snsUser);
+        if (user != null) {
+        	session.setAttribute(SessionNames.LOGIN, user);
+        	model.addAttribute("result", user.getUname() + "님 반갑습니다! ");
+        } else {
+        	model.addAttribute("result", snsUser.getUname() + "님께서는 가입하지 않는 사용자입니다. 가입해 주세요!");
+        }
+        
+        return "/loginResult";
 	}
 	
+
 	// ---------------------------------------------------------------------------------------
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -76,18 +117,19 @@ public class UserController {
 			service.keepLogin(user.getUid(), session.getId(), new Date());
 		}
 		
-		return "/login";
+		return "/logout";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public void login(Model model) throws Exception {
 		logger.info("login GET .....");
 		
-		/* 구글code 발행 */
+		SNSLogin snsLogin = new SNSLogin(naverSns);
+		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		
+		/* 구글code 발행을 위한 URL 생성 */
 		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
 		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
-
-		System.out.println("구글:" + url);
 
 		model.addAttribute("google_url", url);
 	}

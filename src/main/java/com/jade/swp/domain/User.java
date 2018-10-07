@@ -1,5 +1,7 @@
 package com.jade.swp.domain;
 
+import java.util.Map;
+
 import lombok.Data;
 
 @Data
@@ -9,6 +11,10 @@ public class User {
 	private String upw;
 	private String uname;
 	private Integer upoint;
+	
+	private String googleid;
+	private String naverid;
+	private Map<String, String> name;
 	
 	public static void main(String[] args) {
 		User user1 = new User();

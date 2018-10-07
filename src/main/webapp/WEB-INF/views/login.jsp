@@ -29,10 +29,13 @@
 
 	</form>
 	
-	<div id="google_id_login" class="text-center">
-	   <a href="${google_url}">
-	       <img width="230" src="${pageContext.request.contextPath}/resources/images/google-login-button.png"/>
+	<div class="text-center">
+	   <a href="${naver_url}">
+	       <img width="230" src="/resources/images/naver-login-button.png"/>
 	   </a>
+	   <a href="${google_url}">
+           <img width="230" src="/resources/images/google-login-button.png"/>
+       </a>
 	</div>
 	
 <%@ include file="footer.jsp"%>

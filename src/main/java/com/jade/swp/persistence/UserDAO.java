@@ -12,4 +12,8 @@ public interface UserDAO {
 	void keepLogin(String uid, String id, Date expire);
 
 	User checkLoginBefore(String loginCookie);
+
+	User getByNaverid(String naverid);
+
+	User getByGoogleid(String googleid);
 }

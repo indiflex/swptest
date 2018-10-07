@@ -22,6 +22,8 @@ public class UserDAOImpl implements UserDAO {
 	private static final String LOGIN = NS + ".login";
 	private static final String KEEP_LOGIN = NS + ".keepLogin";
 	private static final String CHECK_LOGIN_BEFORE = NS + ".checkLoginBefore";
+	private static final String GET_BY_NAVERID = NS + ".getByNaverid";
+	private static final String GET_BY_GOOGLEID = NS + ".getByGoogleid";
 
 	@Override
 	public User login(LoginDTO dto) throws Exception {
@@ -40,6 +42,16 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public User checkLoginBefore(String loginCookie) {
 		return session.selectOne(CHECK_LOGIN_BEFORE, loginCookie);
+	}
+
+	@Override
+	public User getByNaverid(String naverid) {
+		return session.selectOne(GET_BY_NAVERID, naverid);
+	}
+
+	@Override
+	public User getByGoogleid(String googleid) {
+		return session.selectOne(GET_BY_GOOGLEID, googleid);
 	}
 
 }

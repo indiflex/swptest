@@ -26,6 +26,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.jade.swp" />
+	<context:component-scan base-package="com.jade.swp.auth" />
 
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <beans:property name="maxUploadSize" value="10485760"></beans:property>
@@ -57,16 +58,54 @@
            <beans:ref bean="authInterceptor" />
        </interceptor>
     </interceptors>
-  
-    <beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
-        <beans:constructor-arg value="1058317413165-7nskl6kcmmqm0ei5feo2rcj0vcje6tr8.apps.googleusercontent.com" />
-        <beans:constructor-arg value="pF6BYKwJhaEBeXFMKmxIXlQA" />
+    
+    
+    <!-- naver login -->
+    <beans:bean id="naverClientID" class="java.lang.String">
+        <beans:constructor-arg value="WXA3MyCTl2ZjeGgCvWyT" />
+    </beans:bean>
+    <beans:bean id="naverClientSecret" class="java.lang.String">
+        <beans:constructor-arg value="oUtLk5hICa" />
+    </beans:bean>
+    <beans:bean id="naverRedirectUrl" class="java.lang.String">
+        <beans:constructor-arg value="http://localhost:8080/auth/naver/callback" />
     </beans:bean>
     
-    <!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+    
+    <!-- google login -->
+    <beans:bean id="googleClientID" class="java.lang.String">
+        <beans:constructor-arg value="380351136364-m1fdvn48bqmeo40jp5vh5qo0tfqmk6pn.apps.googleusercontent.com" />
+    </beans:bean>
+    <beans:bean id="googleClientSecret" class="java.lang.String">
+        <beans:constructor-arg value="ayt_dqTt4y6NH24JgciUMN4G" />
+    </beans:bean>
+    <beans:bean id="googleRedirectUrl" class="java.lang.String">
+        <beans:constructor-arg value="http://localhost:8080/auth/google/callback" />
+    </beans:bean>
+    
+    <beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+        <beans:constructor-arg ref="googleClientID"/>
+        <beans:constructor-arg ref="googleClientSecret" />
+    </beans:bean>
+    
     <beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
-        <beans:property name="scope" value="https://www.googleapis.com/auth/plus.login" />
-        <beans:property name="redirectUri" value="http://localhost:9090/auth/google/callback" />
-    </beans:bean>	
+        <beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email" />
+        <!-- <beans:property name="scope" value="https://www.googleapis.com/auth/plus.login" /> -->
+        <beans:property name="redirectUri" ref="googleRedirectUrl" />
+    </beans:bean>
+    
+    <beans:bean id="naverSns" class="com.jade.swp.auth.SnsValue">
+        <beans:constructor-arg value="naver" />
+        <beans:constructor-arg ref="naverClientID" />
+        <beans:constructor-arg ref="naverClientSecret" />
+        <beans:constructor-arg ref="naverRedirectUrl" />
+    </beans:bean>
+    
+    <beans:bean id="googleSns" class="com.jade.swp.auth.SnsValue">
+        <beans:constructor-arg value="google" />
+        <beans:constructor-arg ref="googleClientID" />
+        <beans:constructor-arg ref="googleClientSecret" />
+        <beans:constructor-arg ref="googleRedirectUrl" />
+    </beans:bean>
 	
 </beans:beans>
