@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.WebUtils;
 
 import com.jade.swp.domain.Criteria;
 import com.jade.swp.domain.PageMaker;
@@ -33,9 +36,23 @@ public class ReplyController {
 	private static final Logger logger = LoggerFactory.getLogger(ReplyController.class);
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<String> register(@RequestBody Reply reply) {
+	public ResponseEntity<String> register(@RequestBody Reply reply, HttpServletRequest request, HttpSession session) {
 		logger.debug("ReplyRegister>> {}", reply);
+		
+		User loginUser = (User)session.getAttribute(SessionNames.LOGIN);
+		
+		logger.info("ReplyController.POST={}", loginUser);
 		try {
+//			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+//			if (loginUser == null && loginCookie == null) {
+//				return new ResponseEntity<>("Not LoggedIn", HttpStatus.UNAUTHORIZED);
+//				
+//			} else if (loginCookie != null) {
+//				loginUser = new User();
+//				loginUser.setUid("user1");
+//			}
+			
+//			reply.setReplyer(loginUser.getUid());
 			service.addReply(reply);
 			return new ResponseEntity<>("success111", HttpStatus.OK);
 		} catch (Exception e) {

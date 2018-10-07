@@ -14,10 +14,10 @@ import com.jade.swp.dto.LoginDTO;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-	
+
 	@Inject
 	private SqlSession session;
-	
+
 	private static final String NS = "com.jade.swp.persistence.UserMapper";
 	private static final String LOGIN = NS + ".login";
 	private static final String KEEP_LOGIN = NS + ".keepLogin";
@@ -29,11 +29,11 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void keepLogin(String uid, String sessionId, Date sessionLimit) {
+	public void keepLogin(String uid, String sessionId, Date expire) {
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("uid", uid);
-		paramMap.put("sessionId", sessionId);
-		paramMap.put("sessionLimit", sessionLimit);
+		paramMap.put("sessionkey", sessionId);
+		paramMap.put("sessionlimit", expire);
 		session.update(KEEP_LOGIN, paramMap);
 	}
 

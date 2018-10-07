@@ -19,39 +19,47 @@ public class AuthInterceptor extends HandlerInterceptorAdapter implements Sessio
 	private UserService service;
 	
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+			Object handler)
 			throws Exception {
+		
+		System.out.println("LoginInterceptor.pre>>");
 		
 		HttpSession session = request.getSession();
 		
 		if (session.getAttribute(LOGIN) == null) {
-			saveAttemptedLocation(request);
-			
-			Cookie loginCookie = WebUtils.getCookie(request, LOGIN_COOKIE);
+			Cookie loginCookie = WebUtils.getCookie(request, SessionNames.LOGIN_COOKIE);
 			if (loginCookie != null) {
-				User savedUser = service.checkLoginBefore(loginCookie.getValue());
-				if (savedUser != null) {
-					session.setAttribute(LOGIN, savedUser);
+				User loginedUser = service.checkLoginBefore(loginCookie.getValue());
+				if (loginedUser != null) {
+					session.setAttribute(LOGIN, loginedUser);
 					return true;
 				}
 			}
 			
+			String uri = request.getRequestURI();
+			String httpMethod = request.getMethod();
+			if (StringUtils.contains(uri, "/replies/") 
+					&& !StringUtils.equalsIgnoreCase(httpMethod, "GET")) {
+				response.sendError(401, "Need Login");
+				return false;
+			}
+			
+			saveAttemptedLocation(request, session);
+			
 			response.sendRedirect("/login");
-			return false;
 		}
-		
+
 		return true;
 	}
 
-	private void saveAttemptedLocation(HttpServletRequest request) {
-		String uri = request.getRequestURI();
-		String query = request.getQueryString();
-		System.out.println("AuthInterceptor.saveAttemp>>" + uri + ", " + query);
-		if (StringUtils.isNotBlank(query)) {
+	private void saveAttemptedLocation(HttpServletRequest request, HttpSession session) {
+		String uri = request.getRequestURI(); //board/register
+		String query = request.getQueryString(); //dfd=121
+		if (StringUtils.isNotEmpty(query))
 			uri += "?" + query;
-		}
 		
-		request.getSession().setAttribute(ATTEMPTED, uri);
+		session.setAttribute(ATTEMPTED, uri);
 	}
-
+	
 }

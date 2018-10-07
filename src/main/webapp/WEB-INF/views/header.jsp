@@ -253,8 +253,12 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <img src="/resources/dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                  <span id="loginUserName" class="hidden-xs">
-                    Please Sign In!
+                  <span class="hidden-xs">
+                  <% if (session.getAttribute("loginUser") == null) { %>
+                    Please Sign In
+                  <% } else { %>
+                    ${ loginUser.uname }
+                  <% } %>
                   </span>
                 </a>
                 <ul class="dropdown-menu">
@@ -262,7 +266,7 @@
                   <li class="user-header">
                     <img src="/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
                     <p>
-                      Alexander Pierce - Web Developer
+                      ${ loginUser.uname } 
                       <small>Member since Nov. 2012</small>
                     </p>
                   </li>
@@ -307,7 +311,7 @@
               <img src="/resources/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
-              <p>Alexander Pierce</p>
+              <p>${ loginUser.uname }</p>
 
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
@@ -327,14 +331,14 @@
             <li class="header">MAIN NAVIGATION</li>
             <li class="treeview">
               <a href="/login">
-                <i class="fa fa-sign-in"></i> <span>Sign In</span>
+                <i class="fa fa-user"></i> <span>Sing In</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
             </li>
             <li class="treeview">
               <a href="/board/listPage">
                 <i class="fa fa-clipboard"></i> <span>Board</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
-             </li>
+            </li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -476,7 +480,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            SWP
+            General Form Elements
             <small>Preview</small>
           </h1>
           <ol class="breadcrumb">
@@ -485,12 +489,3 @@
             <li class="active">General Elements</li>
           </ol>
         </section>
-        
-<script>
-$(document).ready( e => {
-	let loginUserName = '${ login.uname }';
-	if (loginUserName) {
-		$('#loginUserName').text(loginUserName);
-	}
-});
-</script>

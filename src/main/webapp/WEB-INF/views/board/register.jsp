@@ -6,7 +6,8 @@
 	<form role="form" method="post">
 		<div class="box-body">
 			<div class="form-group">
-				<label for="title">제목</label> <input type="text" id="title"
+				<label for="title">제목</label>
+				<input type="text" id="title"
 					name="title" class="form-control" placeholder="title..." />
 			</div>
 
@@ -18,7 +19,8 @@
 
 			<div class="form-group">
 				<label for="writer">작성자</label>
-				<input type="text" id="writer" name="writer" value="${ login.uid }" class="form-control" readonly/>
+				<input type="text" id="writer" value="${ loginUser.uid }"
+					name="writer" class="form-control" readonly />
 			</div>
 			
 			<div class="form-group">
@@ -37,7 +39,7 @@
 			<%@ include file="uploadedFiles.jsp"%>
 		  </ul>
 		  
-		  <button type="submit" class="btn btn-primary">Submit</button>
+		  <button type="submit" class="btn btn-primary">Submit</buteston>
 		</div>
 
 	</form>

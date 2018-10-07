@@ -5,16 +5,16 @@
   
 <mapper namespace="com.jade.swp.persistence.UserMapper">
 
-    <select id="login" resultType="User">
-        select * from User where uid = #{uid} and upw = password(#{upw})
+    <select id="login" resultType="com.jade.swp.domain.User">
+        select * from User where uid = #{uid} and upw = password(#{upw});
     </select>
     
     <update id="keepLogin">
-        update User set sessionkey = #{sessionId}, sessionlimit = #{sessionLimit}
+        update User set sessionkey = #{sessionkey}, sessionlimit = #{sessionlimit}
          where uid = #{uid}
     </update>
     
-    <select id="checkLoginBefore" resultType="User">
+    <select id="checkLoginBefore" resultType="com.jade.swp.domain.User">
         select * from User
          where sessionkey = #{loginCookie}
            and sessionlimit > now()

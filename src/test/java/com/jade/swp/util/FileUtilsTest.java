@@ -16,7 +16,7 @@ public class FileUtilsTest {
 
 	private static final String uploadRootPath = "/Users/jade/workspace/lecture/tjespring/uploads";
 	
-	@Test
+	@Ignore @Test
 	public void test() {
 		assertTrue(existsDir(uploadRootPath));
 		
@@ -25,7 +25,7 @@ public class FileUtilsTest {
 		assertTrue(existsDir(path));
 	}
 	
-	@Test
+	@Ignore @Test
 	public void testThumbnail() throws IOException {
 		String dirname = "/Users/jade/workspace/lecture/tjespring/uploads/2018/09/21";
 		String filename = "ember.jpg";

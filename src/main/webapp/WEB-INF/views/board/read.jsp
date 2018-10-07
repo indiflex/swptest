@@ -81,16 +81,16 @@
 		  </ul>
 
           {{#if loginUid}}
-            <button onclick="editReply('{{loginUid}}')" class="btn btn-success pull-right">댓글쓰기({{loginUid}})</button>
+             <button onclick="editReply('{{loginUid}}')" class="btn btn-success pull-right">댓글쓰기</button>
           {{/if}}
 		</nav>
 	</script>
 
 	<div class="box-footer text-center">
-	  <c:if test="${ login.uid == board.writer }">
+	  <c:if test="${ loginUser.uid == board.writer }">
 		<button id="btn-remove-read" class="btn btn-danger">삭제</button>
 		<a href="/board/update${criteria.makeQuery()}&bno=${ board.bno }"
-			class="btn btn-primary">수정</a> 
+			class="btn btn-primary">수정</a>
 	  </c:if>
 		<a href="/board/listPage${criteria.makeQuery()}" class="btn btn-default">목록</a>
 	</div>
@@ -106,8 +106,8 @@
       <div class="modal-body">
         <div>
             작성자
-            <input type="text" name="replyer" id="replyer" onkeyup="checkEdit()" value="{{replyer}}" readonly
-            class="form-control" />
+            <input type="text" name="replyer" id="replyer" onkeyup="checkEdit()"
+             value="{{replyer}}" {{#if gIsEdit}}readonly{{/if}} class="form-control" readonly />
         </div>
         <div class="mt10">
             내용<textarea name="replytext" id="replytext" onkeyup="checkEdit()" rows="3" class="form-control">{{replytext}}</textarea>

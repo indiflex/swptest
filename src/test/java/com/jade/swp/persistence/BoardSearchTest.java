@@ -35,8 +35,7 @@ public class BoardSearchTest {
 		criteria.setPerPageNum(20);
 		List<Board> list = dao.listCriteria(criteria);
 		
-		assertEquals(11, list.size());
-		assertEquals(11, dao.countPaging(criteria));
+		assertEquals(list.size(), dao.countPaging(criteria));
 	}
 	
 	@Test

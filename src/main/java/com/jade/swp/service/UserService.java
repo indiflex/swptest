@@ -9,7 +9,7 @@ public interface UserService {
 
 	User login(LoginDTO dto) throws Exception;
 
-	void keepLogin(String uid, String id, Date sessionLimit);
+	void keepLogin(String uid, String id, Date expire);
 
 	User checkLoginBefore(String value);
 

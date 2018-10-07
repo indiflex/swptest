@@ -33,29 +33,40 @@
     <beans:bean id="uploadPath" class="java.lang.String">
         <beans:constructor-arg value="/Users/jade/workspace/lecture/tjespring/uploads"></beans:constructor-arg>
     </beans:bean>
-	
-	<!-- interceptor beans -->
-	<beans:bean id="sampleInterceptor" class="com.jade.swp.interceptor.SampleInterceptor"></beans:bean>
-	<beans:bean id="loginInterceptor" class="com.jade.swp.interceptor.LoginInterceptor"></beans:bean>
-	<beans:bean id="authInterceptor" class="com.jade.swp.interceptor.AuthInterceptor"></beans:bean>
-	
-	<interceptors>
-	   <interceptor>
-	       <mapping path="/board/listPage" />
-	       <beans:ref bean="sampleInterceptor"/>
-	   </interceptor>
-	   
-	   <interceptor>
+    
+    <beans:bean id="sampleInterceptor" class="com.jade.swp.interceptor.SampleInterceptor"/>
+    <beans:bean id="loginInterceptor" class="com.jade.swp.interceptor.LoginInterceptor"/>
+    <beans:bean id="authInterceptor" class="com.jade.swp.interceptor.AuthInterceptor"/>
+
+    <interceptors>
+       <interceptor>
+           <mapping path="/board/listPage" />
+           <beans:ref bean="sampleInterceptor" />
+       </interceptor>
+       
+       <interceptor>
            <mapping path="/loginPost" />
-           <beans:ref bean="loginInterceptor"/>
+           <beans:ref bean="loginInterceptor" />
        </interceptor>
        
        <interceptor>
            <mapping path="/board/register" />
            <mapping path="/board/update" />
            <mapping path="/board/remove" />
-           <beans:ref bean="authInterceptor"/>
+           <mapping path="/replies/register" />
+           <beans:ref bean="authInterceptor" />
        </interceptor>
-	</interceptors>
+    </interceptors>
+  
+    <beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+        <beans:constructor-arg value="1058317413165-7nskl6kcmmqm0ei5feo2rcj0vcje6tr8.apps.googleusercontent.com" />
+        <beans:constructor-arg value="pF6BYKwJhaEBeXFMKmxIXlQA" />
+    </beans:bean>
+    
+    <!-- 승인된 자바스크립트 원본과 승인된 리디렉션 URI -->
+    <beans:bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+        <beans:property name="scope" value="https://www.googleapis.com/auth/plus.login" />
+        <beans:property name="redirectUri" value="http://localhost:9090/auth/google/callback" />
+    </beans:bean>	
 	
 </beans:beans>
