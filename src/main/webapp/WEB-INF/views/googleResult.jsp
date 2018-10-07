@@ -7,6 +7,6 @@
 <title>Google Login Result Page</title>
 </head>
 <body>
-    ${ result }
+    Google Login Result: ${ result }
 </body>
 </html>
