@@ -50,7 +50,7 @@ public class UserController {
 	@RequestMapping(value = "/auth/google/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String googleCallback(Model model, @RequestParam String code) throws IOException {
 		System.out.println("GGGGGGG>> 여기는 googleCallback: " + code);
-		System.out.println(model.toString());
+		System.out.println("Model: " + model.toString());
 
 		return "/googleResult";
 	}
