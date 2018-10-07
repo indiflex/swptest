@@ -51,6 +51,7 @@ public class UserController {
 	public String googleCallback(Model model, @RequestParam String code) throws IOException {
 		System.out.println("GGGGGGG>> 여기는 googleCallback: " + code);
 		System.out.println("Model: " + model.toString());
+		System.out.println("This is master written!");
 
 		return "/googleResult";
 	}
