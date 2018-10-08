@@ -45,7 +45,7 @@
 	</form>
 
     <form action="/uploadAjaxes" id="form_attach" method="POST" enctype="multipart/form-data">
-	   <input type="hidden" name="type" value="ajax" />
+	   <input type="hidden" name="isdirect" id="isdirect" value="true" />
 	   <input type="file" name="files" id="ajax-file" style="display: none;" />
 	   <!-- <input type="submit" value="ajax로 제출" /> -->
     </form>

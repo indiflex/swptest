@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<script src="/resources/upload.js?ver=2"></script> 
+<script src="/resources/upload.js?ver=3"></script> 
   
 <script id="template" type="text/x-handlebars-template">
               {{#each upFiles}} 

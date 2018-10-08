@@ -34,6 +34,9 @@
     <beans:bean id="uploadPath" class="java.lang.String">
         <beans:constructor-arg value="/Users/jade/workspace/lecture/tjespring/uploads"></beans:constructor-arg>
     </beans:bean>
+    <beans:bean id="uploadDirectPath" class="java.lang.String">
+        <beans:constructor-arg value="/Library/WebServer/Documents/uploads"></beans:constructor-arg>
+    </beans:bean>
     
     <beans:bean id="sampleInterceptor" class="com.jade.swp.interceptor.SampleInterceptor"/>
     <beans:bean id="loginInterceptor" class="com.jade.swp.interceptor.LoginInterceptor"/>
@@ -54,7 +57,7 @@
            <mapping path="/board/register" />
            <mapping path="/board/update" />
            <mapping path="/board/remove" />
-           <mapping path="/replies/register" />
+           <mapping path="/replies/*" />
            <beans:ref bean="authInterceptor" />
        </interceptor>
     </interceptors>
