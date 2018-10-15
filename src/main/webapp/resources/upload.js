@@ -3,7 +3,8 @@ const $fileDrop = $('div.fileDrop');
 let gUri = window.location.pathname,
 	gIsRegister = gUri.indexOf('/register') !== -1,
 	gIsUpdate = gUri.indexOf('/update') !== -1,
-	gIsEditing = gIsRegister || gIsUpdate;
+	gIsEditing = gIsRegister || gIsUpdate,
+	gIsDirect = false;
 
 $fileDrop.on('dragover dragenter', (evt) => {
     evt.preventDefault();
@@ -96,17 +97,19 @@ function checkImageType(fileName) {
 
 function getFileInfo(fullName) {
 	let fileName, imgsrc, getLink, fileLink;
+	let $isdirect = $("#form_attach input#isdirect"),
+	    isdirect = $isdirect && $isdirect.length && $isdirect.val() == "true";
+  	
+	console.debug("isdirect>>>>>>", isdirect)
+	isdirect = isdirect ? true : gIsDirect;
 	
-	const $isdirect = $('#form_attach input#isdirect'),
-		  isdirect = $isdirect && $isdirect.length && $isdirect.val() == 'true';
-	console.debug("isdirect>>>>>>>>>>", $isdirect, isdirect)
-	
-	let protocol = document.location.protocol,
-		hostname = document.location.hostname;
-	
+	const uphost = window.location.protocol + "//" + window.location.hostname; 
 	if (checkImageType(fullName)) {
-		imgsrc = isdirect ? `${protocol}//${hostname}/uploads${fullName}`  
-				          : "/displayFile?fileName=" + fullName;
+		if (isdirect)
+			imgsrc = uphost + "/uploads" + fullName;
+		else
+			imgsrc = "/displayFile?fileName=" + fullName;
+		
 		fileLink = fullName.substring(14); // 원본파일명/2018/09/00/s_
 		let front = fullName.substring(0,12),
 	        end = fullName.substring(14);
@@ -118,14 +121,13 @@ function getFileInfo(fullName) {
 		getLink = "/displayFile?fileName=" + fullName;
 	}
 	
-	if (isdirect) {
-		getLink += "&isdirect=" + isdirect;
-	}
+	if (isdirect)
+		getLink += "&isdirect=true";
 	
 	// 실제파일명 (fileLink = asdfsafsdafdsaf_realname.ext)
 	fileName = fileLink.substring(fileLink.indexOf('_') + 1);
 	let fileId = fileLink.substring(0, fileLink.indexOf('_'));
-	console.debug("getLink>>", getLink)
+//	console.debug("fileId>>", fileId)
 	
 	return {
 	    fileName: fileName,

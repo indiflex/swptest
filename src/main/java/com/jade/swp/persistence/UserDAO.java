@@ -13,7 +13,5 @@ public interface UserDAO {
 
 	User checkLoginBefore(String loginCookie);
 
-	User getByNaverid(String naverid);
-
-	User getByGoogleid(String googleid);
+	User getBySns(User snsUser);
 }

@@ -5,13 +5,12 @@ import com.github.scribejava.core.builder.api.DefaultApi20;
 public class NaverAPI20 extends DefaultApi20 implements SnsUrls {
 	private NaverAPI20() {
 	}
-
+	
 	private static class InstanceHolder {
 		private static final NaverAPI20 INSTANCE = new NaverAPI20();
 	}
-
-	// singleton !!
-	public static NaverAPI20 getInstance() {
+	
+	public static NaverAPI20 instance() {
 		return InstanceHolder.INSTANCE;
 	}
 
@@ -24,4 +23,6 @@ public class NaverAPI20 extends DefaultApi20 implements SnsUrls {
 	protected String getAuthorizationBaseUrl() {
 		return NAVER_AUTH;
 	}
+	
+	
 }

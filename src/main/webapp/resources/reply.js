@@ -116,6 +116,7 @@ function save() {
 	let url = gIsEdit ? "/replies/" + gRno : "/replies/",
 		method = gIsEdit ? 'PATCH' : 'POST';
 	
+	console.debug("QQQ>>", gIsEdit, gBno)
 	if (!gIsEdit)
 		jsonData.bno = gBno;
 	

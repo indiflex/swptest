@@ -30,12 +30,8 @@
 	</form>
 	
 	<div class="text-center">
-	   <a href="${naver_url}">
-	       <img width="230" src="/resources/images/naver-login-button.png"/>
-	   </a>
-	   <a href="${google_url}">
-           <img width="230" src="/resources/images/google-login-button.png"/>
-       </a>
+	   <a href="${ naver_url }"><img width="300" src="/resources/images/naver-login.png" alt="Naver Login" /></a>
+	   <a href="${ google_url }"><img width="300" src="/resources/images/google-login.png" alt="Google Login" /></a>
 	</div>
 	
 <%@ include file="footer.jsp"%>

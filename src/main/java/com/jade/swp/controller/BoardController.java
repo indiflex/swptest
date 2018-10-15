@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jade.swp.domain.Board;
 import com.jade.swp.domain.Criteria;
 import com.jade.swp.domain.PageMaker;
+import com.jade.swp.domain.User;
+import com.jade.swp.interceptor.SessionNames;
+import com.jade.swp.mapper.SampleMapper;
 import com.jade.swp.service.BoardService;
 
 @Controller
@@ -27,6 +31,9 @@ import com.jade.swp.service.BoardService;
 public class BoardController {
 	@Inject
 	private BoardService service;
+	
+	@Inject
+	private SampleMapper sampleMapper;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -82,7 +89,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String updatePost(Board board, Criteria criteria, RedirectAttributes rttr) throws Exception {
-		logger.info("update POST ..... {}", board.getBno());
+		logger.info("update POST ..... {}", board);
 		service.modify(board);
 		rttr.addFlashAttribute("msg", "save-ok");
 		rttr.addAttribute("page", criteria.getPage());
@@ -112,7 +119,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/listPage", method = RequestMethod.GET)
-	public void listPage(Criteria criteria, Model model) throws Exception {
+	public void listPage(Criteria criteria, Model model, HttpSession session) throws Exception {
 		logger.info(">>>> listPage {}", criteria);
 		List<Board> boards = service.listCriteria(criteria);
 		model.addAttribute("list", boards);
@@ -123,6 +130,22 @@ public class BoardController {
 		logger.debug("totalCount=" + totalCount);
 		pageMaker.setTotalCount(totalCount);
 		model.addAttribute("pageMaker", pageMaker);
+		
+		// TEST
+		User loginUser = (User)session.getAttribute(SessionNames.LOGIN);
+		if (loginUser != null) {
+			model.addAttribute("currentTime", sampleMapper.getTime());
+			model.addAttribute("userName", sampleMapper.getUserName(loginUser.getUid()));
+			model.addAttribute("sessionLimit", sampleMapper.getUserSessionLimit(loginUser.getUid()));
+			
+			String searchUser = sampleMapper.search("uid", loginUser.getUid());
+			System.out.println("SearchUser1=" + searchUser);
+			String searchUser2 = sampleMapper.search("uname", loginUser.getUname());
+			System.out.println("SearchUser2=" + searchUser2);
+			
+		} else {
+			System.out.println("You are not login yet!!");
+		}
 	}
 	
 	@RequestMapping(value = "/dummy10", method = RequestMethod.GET)

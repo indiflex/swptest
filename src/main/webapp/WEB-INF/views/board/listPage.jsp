@@ -47,6 +47,7 @@
 		       <input type="text" id="keyword" name="keyword" class="form-control"
 		        value="${pageMaker.criteria.keyword}" placeholder="검색어를 입력하세요..." />
 		       <button id="searchBtn" class="btn btn-primary">Search</button>
+		       <span class="ml10">${ currentTime }, ${ userName }, ${ sessionLimit }</span>
 		    </div>
 	    </div>
 	    

@@ -9,20 +9,32 @@ import lombok.Data;
 
 @Data
 public class SnsValue implements SnsUrls {
-	private DefaultApi20 api20;
+	private String service;
 	private String clientId;
 	private String clientSecret;
 	private String redirectUrl;
-	private String profileApiUrl;
-	private boolean isNaver;
+	private DefaultApi20 api20Instance;
+	private String profileUrl;
 	
-	public SnsValue(String service, String id, String secret, String rurl) {
-		this.clientId = id;
-		this.clientSecret = secret;
+	private boolean isNaver;
+	private boolean isGoogle;
+	
+	public SnsValue(String service, String cid, String cs, String rurl) {
+		this.service = service;
+		this.clientId = cid;
+		this.clientSecret = cs;
 		this.redirectUrl = rurl;
 		
-		this.isNaver = StringUtils.equalsIgnoreCase(service, "naver");
-		this.profileApiUrl = isNaver ? NAVER_PROFILE_URL : GOOGLE_PROFILE_URL;
-		this.api20 = isNaver ? NaverAPI20.getInstance() : GoogleApi20.instance();
+		this.isNaver = StringUtils.equalsIgnoreCase("naver", this.service);
+		this.isGoogle = StringUtils.equalsIgnoreCase("google", this.service);
+		
+		if (isNaver) {
+			this.api20Instance = NaverAPI20.instance();
+			this.profileUrl = NAVER_PROFILE_URL;
+			
+		} else if (isGoogle) {
+			this.api20Instance = GoogleApi20.instance();
+			this.profileUrl = GOOGLE_PROFILE_URL;
+		}
 	}
 }

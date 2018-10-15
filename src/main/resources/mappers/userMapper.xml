@@ -20,14 +20,12 @@
            and sessionlimit > now()
     </select>
     
-    <select id="getByNaverid" resultType="com.jade.swp.domain.User">
-        select * from User
-         where naverid = #{naverid}
+    <select id="getBySnsNaver" resultType="com.jade.swp.domain.User">
+        select * from User where naverid = #{naverid}
     </select>
     
-    <select id="getByGoogleid" resultType="com.jade.swp.domain.User">
-        select * from User
-         where googleid = #{googleid}
+    <select id="getBySnsGoogle" resultType="com.jade.swp.domain.User">
+        select * from User where googleid = #{googleid}
     </select>
     
 </mapper>

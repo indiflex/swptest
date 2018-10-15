@@ -66,10 +66,10 @@ public class BoardControllerTest {
 		.andExpect(handler().methodName("read"));
 	}
 	
-	@Test
+	@Ignore @Test
 	public void testUpdate() throws Exception {
 		this.mockMvc.perform(post("/board/update")
-				.param("bno", "2")
+				.param("bno", "255")
 				.param("title", "new title")
 				.param("content", "new content")
 				)

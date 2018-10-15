@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.jade.swp.domain.User;
@@ -34,12 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getBySns(User snsUser) {
-		if (StringUtils.isNotEmpty(snsUser.getNaverid())) {
-			return dao.getByNaverid(snsUser.getNaverid());
-			
-		} else {
-			return dao.getByGoogleid(snsUser.getGoogleid());
-		}
+		return dao.getBySns(snsUser);
 	}
 
 }
