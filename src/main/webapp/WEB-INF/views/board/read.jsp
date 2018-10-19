@@ -94,6 +94,11 @@
 	  </c:if>
 		<a href="/board/listPage${criteria.makeQuery()}" class="btn btn-default">목록</a>
 	</div>
+	
+	<div class="well">
+	   <input type="text" id="msg" size="50" class="form-control" placeholder="Message..." />
+	   <a href="#" id="btnSend" class="btn btn-default">SendMessage</a>
+	</div>
 </section>
 
 <script type="text/x-handlebars-template" class="modal fade" id="myModal">
@@ -154,8 +159,32 @@ $(document).ready(	function() {
     showAttaches(${board.bno});	
     
     gIsDirect = true;
+    
+    
+    var ws = new WebSocket("ws://localhost:8080/echo?bno=1234");
+    ws.onopen = function () {
+        console.log('Info: connection opened.');
+        ws.send("hi~");
+    };
+    ws.onmessage = function (event) {
+        console.log(event.data+'\n');
+    };
+    ws.onclose = function (event) {
+        console.log('Info: connection closed.');
+    };
+    
+    $('#btnSend').on('click', function() {
+    	let msg = $('input#msg').val();
+    	if (!msg)
+    		return alert("메시지 내용을 입력하세요!!");
+    	
+    	ws.send(msg);
+    });
+
 });
 </script>
+
+
 
 
 
