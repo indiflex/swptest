@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test::ChatClient</title>
+  <style type="text/css">
+    .red { color: red; }
+  </style>
+</head>
+<body>
+  <h1>Chat Test Client <strong id="myid" class="red"></strong></h1>
+
+  <div>
+    <span id="rooms"></span>
+    <input type="text" id="room" value="room1" size="10">
+    <button onclick="join()">Join</button>
+  </div>
+  <hr>
+
+  <div id="status" class="red"></div>
+  <div id="list">
+    
+  </div>
+  <div>
+    <input type="text" id="msg" value="hi~!">
+    <button id="btnSend" onclick="send()" type="submit">Send</button>
+  </div>
+
+  <div>
+    <input type="text" id="sid" value="">
+    <button id="btnSend" onclick="sendOne()" type="submit">귓속말</button>
+  </div>
+  
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  var joinedRoom = null;
+  var socket = io('http://localhost:7000');
+
+  socket.on('connect', function(){
+    socket.emit('rooms', rooms => {
+      console.log("rooms>>", rooms)
+      $('#rooms').text(rooms);
+      joinedRoom = 'room1';
+    });
+    socket.emit('join', 'room1');
+    $('#status').text('connected room1')
+  });
+
+  socket.on('message', function(data){
+    console.log("message>>", data)
+    var $list = $('div#list');
+    $list.append(`<div><strong> ${data.msg} </strong></div>`)
+    if (data && data.msg && data.msg.startsWith('Welcome')) {
+      let myid = data.msg.substring(data.msg.lastIndexOf(' ') + 1);
+      console.log("aaaaaaaaaaaa", myid)
+      $('#myid').text(myid);
+    }
+  });
+
+  socket.on('disconnect', function(){
+    console.log("disconnected!!");
+    $('#status').text('disconnected')
+  });
+
+  function send() {
+    var msg = $('#msg').val();
+
+    socket.emit('message', {room: joinedRoom, msg: msg}, function(ret) {
+      console.log("my ret>>", ret)
+      var $list = $('div#list');
+      $list.append(`<div>${ret}</div>`)
+    });
+  }
+
+  function join() {
+    let roomid = $('#room').val();
+    if (joinedRoom === roomid) {
+      alert('already join ' + roomid)
+      return;
+    }
+
+    socket.emit('leave', joinedRoom);
+
+    socket.emit('join', roomid, (ret, rooms) => {
+      $('#status').text('joined ' + ret)
+      joinedRoom = ret;
+      $('#rooms').text(rooms);
+    });
+  }
+</script>
+</body>
+</html>
