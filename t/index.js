@@ -1,6 +1,9 @@
+import util from 'util';
+
 const express = require('express'),
-      util    = require('util'),
+      // util    = require('util'),
       HashMap = require('hashmap');
+
 
 const app = express();
 const testJson = require('./data/test.json');
