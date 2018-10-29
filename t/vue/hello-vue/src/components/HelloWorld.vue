@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1> This is HelloWorkd Component: {{ msg }}</h1>
+    <h1> This is HelloWorkd Component: {{ msg }} - {{fromSister}}</h1>
     <p>
       For guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -31,15 +31,27 @@
 </template>
 
 <script>
+import {EventBus} from '@/main'
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
 
-  // created: function() {
-  //   console.log("created!!!!!!!!!!")
-  // }
+  data() {
+    return {
+      fromSister: null
+    }
+  },
+
+  created() {
+    console.log("HelloWorld created!!!!!!!!!!")
+    EventBus.$on('fromSisterToBrother', rname => {
+      console.log("fromSisterToBrother>>>", rname, this)
+      this.fromSister = rname;
+    });
+  }
 }
 </script>
 

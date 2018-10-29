@@ -26,6 +26,7 @@ module.exports = class {
 
   connect() {
     return this.pool.getConnectionAsync().disposer(function (connection) {
+      console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrealse pooooooooooooooool!!")
       return connection.release();
     });
   }

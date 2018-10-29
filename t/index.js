@@ -1,92 +1,107 @@
-import util from 'util';
-
 const express = require('express'),
-      // util    = require('util'),
-      HashMap = require('hashmap');
+      app = express(),
+      util = require('util'),
+      bodyParser = require('body-parser');
 
+const Pool = require('./pool'),
+      Mydb = require('./mydb'),
+      rest = require('./rest');
 
-const app = express();
-const testJson = require('./data/test.json');
+const pool = new Pool();
 
+app.use(bodyParser.json({limit: '10mb'})); // support json encoded bodies
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); // support encoded bodies
+      
 app.use(express.static('public'));
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-app.get('/', (req, res) => {
-  // res.send("Hello NodeJS!!");
-  res.render('index', {name: '홍길동'});
+app.use( (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, SocketID");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+
+  } else {
+    next();
+  }
 });
 
-app.get('/test/:email', (req, res) => {
-  
-  testJson.email = req.params.email;
-  res.json(testJson);
+app.use(bodyParser.json({limit: '10mb'})); 
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+rest(app, pool);
+
+
+const server = app.listen(7000, function(){
+    console.log("Express's started on port 7000");
 });
 
-
-
-const webserver = app.listen(7000, function(){
-    console.log("Express Server's started on port 7000 by T");
-});
-
-const io = require('socket.io').listen(webserver, {
+const io = require('socket.io').listen(server, {
   log: false,
   origins: '*:*',
   pingInterval: 3000,
   pingTimeout: 5000
 });
 
-io.sockets.on('connection', function(socket, opt) {
+io.sockets.on('connection', (socket, opt) => {
+  socket.emit('message', {msg: 'Welcome ' + socket.id});
 
-  let q = socket.handshake.query;
+  util.log("connection>>", socket.id, socket.handshake.query)
 
-  util.log('Client connected...', socket.id, socket.handshake.query);
-
-  socket.emit('message', {msg: 'Welcome ' + socket.id}, socket.id, q);
-
-  socket.on('join', function(data, fn){
-    socket.join(data, function() {
-      util.log("join>>", data, Object.keys(socket.rooms));
-
+  socket.on('join', function(roomId, fn) {
+    socket.join(roomId, function() {
+      util.log("Join", roomId, Object.keys(socket.rooms));
       if (fn)
-        fn(data, Object.keys(socket.rooms));
+        fn();
     });
-  }); 
+  });
 
-  socket.on('leave', function(data, fn){
-    socket.leave(data, function() {
-      util.log("leave>>", data, Object.keys(socket.rooms));
-
+  socket.on('leave', function(roomId, fn) {
+    util.log("leave>>", roomId, socket.id)
+    socket.leave(roomId, function() {
       if (fn)
-        fn(data, Object.keys(socket.rooms));
+        fn();
     });
-  }); 
+  });
 
   socket.on('rooms', function(fn) {
     if (fn)
-      fn(Object.keys(socket.rooms))
+      fn(Object.keys(socket.rooms));
   });
 
-  socket.on('message', function(data, fn){
-    util.log("message>>", data, Object.keys(socket.rooms));
+  // data: {room: 'roomid', msg: 'msg 내용..'}
+  socket.on('message', (data, fn) => {
+    util.log("message>>", data)
+
+    socket.broadcast.to(data.room).emit('message', {room: data.room, msg: data.msg});
+
     if (fn)
       fn(data.msg);
-
-    // socket.broadcast.to(data.room).emit('message', {msg: data.msg}); // 이 방에서 나를 제외한 사람 모두에게!!
-    io.to(data.room).emit('message', {msg: data.msg}); // 이방 모두(나 포함)
-
-    socket.broadcast.emit('message', {msg: 'BBBBBBBBBBBBBB'}) // 모든방에 모든 이에게 (나 제외!)
   });
 
-  socket.on('disconnect', function(){
-    util.log("disconnect>>", socket.rooms);
+  socket.on('message-for-one', (socketid, msg, fn) => {
+    // socket.broadcast.to(socketid).emit('message', {msg: msg});
+    socket.to(socketid).emit('message', {msg: msg});
   });
 
-  socket.on('disconnecting', (reason) => {
-    let rooms = Object.keys(socket.rooms); //이 socket이 소속된 방들
-    util.log("disconnecting>>", socket.rooms); // [ <socket.id>, 'room 237' ]
+  socket.on('disconnecting', function(data) {
+    util.log("disconnecting>>", socket.id, Object.keys(socket.rooms))
   });
+
+  socket.on('disconnect', function(data) {
+    util.log("disconnect>>", socket.id, Object.keys(socket.rooms))
+  });
+
+
+
+
+
 
 });

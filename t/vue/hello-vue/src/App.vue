@@ -2,9 +2,11 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/posts?aaa=123">Posts</router-link> |
+      <router-link to="/about/390">About</router-link>
     </div>
-    <router-view/>
+    <!-- <router-view/> -->
+    <router-view :key="$route.fullPath"/>
   </div>
 </template>
 
