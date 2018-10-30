@@ -16,7 +16,12 @@ export default new Router({
     },
     { path: '/adm', name: 'adm', component: () => import('./views/Adm') },
     { path: '/survey', name: 'survey', component: () => import('./views/Survey') },
-    { path: '/surveylist', name: 'surveylist', component: () => import('./views/SurveyList') },
+    { 
+      path: '/surveylist', name: 'surveylist', component: () => import('./views/SurveyList'),
+      children: [
+        {path: '/surveylist/surveyedit/:id', name: 'surveyedit', component: () => import('./views/SurveyEdit')}
+      ]
+    },
     {
       path: '/about',
       name: 'about',

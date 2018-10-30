@@ -3,7 +3,7 @@
     <div v-if="!EventBus.admin" class="d-flex justify-content-center">
       <div class="md-form w-75">
         <i class="fa fa-key prefix"></i>
-        <input type="password" name="key" id="key" v-model="adminKey" class="form-control">
+        <input type="password" name="key" id="key" v-model="adminKey" autofocus="true" class="form-control">
         <label for="key">Admin Key</label>
       </div>
     </div>
@@ -14,6 +14,7 @@
   export default {
     beforeCreate() {
       console.log("Adm.beforeCreate>>", this.EventBus.admin)
+      this.EventBus.admin = true; //QQQQQQQQQ
       if (this.EventBus.admin)
         this.$router.replace('surveylist')
     },
