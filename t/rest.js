@@ -5,6 +5,38 @@ const Sql = {
 };
 
 module.exports = function(app, pool) {
+  // Survey 
+  app.get('/apis/surveys', (req, res) => {
+    let mydb = new Mydb(pool);
+    mydb.execute(conn => {
+      conn.query("select * from Survey", (err, ret) => {
+        res.json(ret);
+      });
+    });
+  });
+
+  app.get('/apis/surveys/:id', (req, res) => {
+    let id = req.params.id;
+    let mydb = new Mydb(pool);
+    mydb.execute(conn => {
+      conn.query("select * from Survey where id=", [id], (err, ret) => {
+        res.json(ret);
+      });
+    });
+  });
+
+  app.post('/apis/surveys', (req, res) => {
+    let id = req.params.id;
+    let mydb = new Mydb(pool);
+    mydb.execute(conn => {
+      conn.query("select * from Survey where id=", [id], (err, ret) => {
+        res.json(ret);
+      });
+    });
+  });
+
+
+
   app.get('/dbtest/replies/:bno', (req, res) => {
     let mydb = new Mydb(pool);
     mydb.execute( conn => {

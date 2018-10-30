@@ -1,0 +1,26 @@
+<template>
+  <!--Section: Cards-->
+  <section class="pt-5">
+
+      <!-- Heading & Description -->
+      <div class="wow fadeIn">
+          <!--Section heading-->
+          <h2 class="h1 text-center mb-5">survey.title</h2>
+          <!--Section description-->
+          <p class="text-center">MDB is world's most popular Material Design framework for building responsive, mobile-first websites
+              and apps. </p>
+          <p class="text-center mb-5 pb-5">Trusted by over
+              <strong>400 000</strong> developers and designers. Easy to use & customize. 400+ material UI elements, templates
+              & tutorials.</p>
+      </div>
+      <!-- Heading & Description -->
+
+  </section>
+  <!--Section: Cards-->
+</template>
+
+<script>
+  export default {
+
+  }
+</script>

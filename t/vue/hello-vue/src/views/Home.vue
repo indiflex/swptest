@@ -34,16 +34,16 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld'
-import TodoItem from '@/components/todo-item'
-import Brother from '@/components/Brother'
-import Sister from '@/components/Sister'
+// import HelloWorld from '@/components/HelloWorld'
+// import TodoItem from '@/components/todo-item'
+// import Brother from '@/components/Brother'
+// import Sister from '@/components/Sister'
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld, TodoItem, Brother, Sister
-  },
+  // components: {
+  //   HelloWorld, TodoItem, Brother, Sister
+  // },
   created() {
     console.log("HHHHHHHHHH>>", this._.random(20))
     this.fetchReplies();
