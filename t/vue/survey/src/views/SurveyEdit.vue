@@ -1,73 +1,66 @@
 <template>
-  <div class="card wow fadeIn">
+  <section class="wow fadeIn">
+    <div class="card">
 
-    <h5 class="card-header info-color white-text text-center py-4">
-      <strong>survey.title</strong>
-      <a href="#" @click.prevent="toggle(survey.isEditing)" class="text-dark pull-right m-0"><i class="fa fa-edit"></i></a>
-    </h5>
+      <h5 class="card-header info-color white-text text-center py-4">
+        <strong>{{survey.title}}</strong>
+        <a @click.prevent="toggleSurveyEditing()" href="#" class="pull-right"><i class="fa fa-edit"></i></a>
+      </h5>
 
-    <!--Card content-->
-    <div v-if="survey.isEditing" class="card-body px-lg-5 pt-2">
 
-      <!-- Form -->
-      <div class="text-center" style="color: #757575;">
+      <!--Card content-->
+      <div v-if="isEditing" class="card-body px-lg-5 pt-0">
 
-        <div class="md-form">
-          <input type="text" id="materialLoginFormEmail" class="form-control">
-          <label for="materialLoginFormEmail">E-mail</label>
-        </div>
-
-        <div class="md-form">
-          <input type="text" id="materialLoginFormPassword" class="form-control">
-          <label for="materialLoginFormPassword">Password</label>
-        </div>
-
-        <div class="d-flex justify-content-around">
-          <div>
-            <!-- Remember me -->
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="materialLoginFormRemember">
-              <label class="form-check-label" for="materialLoginFormRemember">Remember me</label>
-            </div>
+        <!-- Form -->
+        <form class="text-center" style="color: #757575;">
+          <div class="md-form w-75">
+            <input type="text" id="title" :value="survey.title" @input="survey.title=$event.target.value" class="form-control">
+            <!-- <input type="text" id="title" v-model="survey.title" class="form-control">
+            <input type="text" id="title" :value="survey.title" @input="survey.title=$event.target.value" class="form-control"> -->
+            <label for="title">설문 제목</label>
           </div>
-          <div>
-            <!-- Forgot password -->
-            <a href="">Forgot password?</a>
+          <Mi label="설문제목" v-model="survey.title" />
+          <MdInput v-model="survey.title" label="설문 제목"/>
+          <!-- <MdInput v-model="ttt"/> -->
+
+          <div class="d-flex justify-content-around">
+            <button @click.prevent="toggleSurveyEditing()" class="btn btn-outline-default btn-block my-4 waves-effect z-depth-0" type="submit">취소</button>
+            <button class="ml-2 btn btn-outline-danger btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">삭제</button>
+            <button class="ml-2 btn btn-outline-primary btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">저장</button>
           </div>
-        </div>
 
-        <!-- Sign in button -->
-        <button class="btn btn-outline-info btn-roundedx btn-blockx my-4 waves-effect" type="submit">Sign in</button>
-
-        <!-- Register -->
-        <p>Not a member?
-          <a href="">Register</a>
-        </p>
+        </form>
+        <!-- Form -->
 
       </div>
-      <!-- Form -->
 
     </div>
-
-  </div>
+  </section> 
 </template>
 
 <script>
   export default {
     created() {
+      let id = this.$route.params.id,
+          url = this.ApiURL + 'surveys/' + id;
 
+      console.log("url>>", url)    
+      this.$http.get(url).then(ret => {
+        this.survey = ret.data
+      });
     },
 
     data() {
       return {
-        survey: {isEditing: false}
+        survey: {},
+        ttt: '123',
+        isEditing: false
       }
     },
 
     methods: {
-      toggle(a) {
-        console.log("toggleeeeeeee>>", a)
-        this.survey.isEditing = !a;
+      toggleSurveyEditing() {
+        this.isEditing = !this.isEditing;
       }
     }
   }

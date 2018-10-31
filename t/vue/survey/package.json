@@ -7,8 +7,16 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "aws-sdk": "^2.344.0",
     "axios": "^0.18.0",
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
     "lodash": "^4.17.11",
+    "mdbootstrap": "^4.5.13",
+    "popper": "^1.0.1",
+    "popper.js": "^1.14.4",
+    "rijs": "^0.9.1",
+    "rijs.npm": "^2.0.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   },

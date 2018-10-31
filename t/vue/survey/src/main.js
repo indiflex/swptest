@@ -5,6 +5,16 @@ import router from './router'
 import axios from 'axios'
 import lodash from 'lodash'
 
+import jQuery from 'jquery'
+global.jQuery = jQuery
+global.$ = jQuery
+
+let bootstrap = require('bootstrap')
+let mdbootstrap = require('mdbootstrap')
+import 'bootstrap/dist/css/bootstrap.css'
+import 'mdbootstrap/css/mdb.min.css'
+
+
 import Global from './components/_global'
 import { utils } from '@/mixins/utils'
 

@@ -9,7 +9,7 @@ module.exports = function(app, pool) {
   app.get('/apis/surveys', (req, res) => {
     let mydb = new Mydb(pool);
     mydb.execute(conn => {
-      conn.query("select * from Survey", (err, ret) => {
+      conn.query("select * from Survey limit 1000", (err, ret) => {
         res.json(ret);
       });
     });
@@ -19,18 +19,35 @@ module.exports = function(app, pool) {
     let id = req.params.id;
     let mydb = new Mydb(pool);
     mydb.execute(conn => {
-      conn.query("select * from Survey where id=", [id], (err, ret) => {
-        res.json(ret);
+      conn.query("select * from Survey where id = ?", [id], (err, ret) => {
+        if (err) throw err;
+        res.json(ret[0]);
+      });
+    });
+  });
+
+  app.put('/apis/surveys/:id', (req, res) => {
+    let id = req.params.id,
+      title = req.body.title,
+      state = req.body.state || '0';
+
+    let mydb = new Mydb(pool);
+    mydb.executeTx(conn => {
+      conn.query("update Survey set title=?, state=? where id = ?", [title, state, id], (err, ret) => {
+        if (err) throw err;
+        res.json(ret.affectedRows);
       });
     });
   });
 
   app.post('/apis/surveys', (req, res) => {
-    let id = req.params.id;
+    let title = req.body.title;
+
     let mydb = new Mydb(pool);
-    mydb.execute(conn => {
-      conn.query("select * from Survey where id=", [id], (err, ret) => {
-        res.json(ret);
+    mydb.executeTx(conn => {
+      conn.query("insert into Survey(title, state) values(?, 0)", [title], (err, ret) => {
+        if (err) throw err;
+        res.json(ret.affectedRows);
       });
     });
   });
